@@ -1,15 +1,26 @@
-const connect = require('./configs/db');
-const app = require('./index');
-require("dotenv").config();
-const PORT = process.env.PORT || 5000;
+const express = require('express')
+const app = express()
+const mongoose = require('mongoose')
+const axios = require('axios')
+const cors = require('cors'); // Import the cors middleware
+const shortnerRouter = require('./Routes/shortnerRoute')
+app.use(express.json())
+app.use(cors());
 
 
-app.listen(PORT, async () => {
-    try {
-        await connect();
-        console.log(`Server is running on ${PORT}`);
+mongoose.connect("mongodb://127.0.0.1:27017/")
+.then(() => {
+   app.listen(3060, () => {
+            console.log("server is on 8060");
+        });
+    })
+    .catch(( err) => {
+        console.log(err.message);
+    });
 
-    } catch (error) {
-        console.log(error.message);
-    }
-});
+
+   
+
+
+
+app.use('/',shortnerRouter)
